@@ -35,9 +35,17 @@ public class Pool : MonoBehaviour
         {
             if (item.poolItemType == poolItemType)
             {
+                var prefabCount = item.prefabs.Count;
+                var prefabIndex = 0;
+                
+                if (prefabCount > 0)
+                { 
+                    prefabIndex = Random.Range(0, prefabCount);
+                }
+                
                 foreach (Transform child in item.parent.transform)
                 {
-                    if (!child.gameObject.activeInHierarchy)
+                    if (!child.gameObject.activeInHierarchy && child.name == item.prefabs[prefabIndex].name)
                     {
                         return child.gameObject;
                     }
@@ -337,8 +345,8 @@ public class Pool : MonoBehaviour
             }
         }
 
-        const string filePathAndName = "Assets/Scripts/Pool/PoolItemType.cs";
- 
+        const string filePathAndName = "Assets/PoolItemType.cs";
+        
         using ( var streamWriter = new StreamWriter( filePathAndName ) )
         {
             streamWriter.WriteLine( "public enum PoolItemType");

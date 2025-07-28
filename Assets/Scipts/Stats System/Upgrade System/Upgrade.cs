@@ -1,36 +1,31 @@
-using System;
+using UnityEngine;
+
+public enum UpgradeType
+{
+    FirePower,
+    FireSpeed,
+    ProjectileCount,
+    ShieldPower,
+    MagnetRange,
+    MoveSpeed,
+    DashCooldown,
+    CritChance,
+    PiercingChance,
+    RapidFireChance
+}
 
 public abstract class Upgrade
 {
-    public string Id;              // Unique ID
     public string Name;            // Display Name
-    public string Description;
-    public int Level = 0;
-    public int MaxLevel = 5;
-    public int BaseCost = 10;
+    public UpgradeType Type;
 
-    public Upgrade(string id, string name, string desc, int baseCost, int maxLevel = 5)
+    public Upgrade(string name, UpgradeType type)
     {
-        Id = id;
         Name = name;
-        Description = desc;
-        BaseCost = baseCost;
-        MaxLevel = maxLevel;
+        Type = type;
     }
 
-    public bool CanUpgrade => Level < MaxLevel && PlayerStats.GetTotalFlux() >= GetCost();
-
-    public int GetCost() => BaseCost + (Level * 10);
-
-    public bool TryPurchase()
-    {
-        if (!CanUpgrade) return false;
-
-        PlayerStats.SetTotalFlux(GetCost());
-        Level++;
-        Apply();
-        return true;
-    }
+    public virtual string GetDescription() => "";
 
     public abstract void Apply();
 }
@@ -39,11 +34,17 @@ public class Upgrade_FirePower : Upgrade
 {
     private const float AdditionRate = 2.0f;
 
-    public Upgrade_FirePower() : base("fire_power", "Overcharged Core", $"Increases fire power from <color=#FFD700>{PlayerStats.FirePower}</color> to <color=#FFD700>{PlayerStats.FirePower + AdditionRate}</color>", 20) { }
+    public Upgrade_FirePower() : base("Overcharged Core", UpgradeType.FirePower) { }
+
+    public override string GetDescription()
+    {
+        return
+            $"Increases fire power from <color=#FFD700>{DataManager.playerStats.FirePower}</color> to <color=#FFD700>{DataManager.playerStats.FirePower + AdditionRate}</color>";
+    }
 
     public override void Apply()
     {
-        PlayerStats.FirePower += AdditionRate;
+        DataManager.playerStats.SetFirePower(AdditionRate);
     }
 }
 
@@ -51,17 +52,25 @@ public class Upgrade_FireSpeed : Upgrade
 {
     private const float DecreaseRate = 0.05f;
     
-    public Upgrade_FireSpeed() : base("fire_speed", "Rapid Firing", $"Decreases time between shots from <color=#FFD700>{PlayerStats.BulletSpeed}</color> seconds to <color=#FFD700>{PlayerStats.BulletSpeed - DecreaseRate}</color> seconds.", 25) { }
+    public Upgrade_FireSpeed() : base( "Rapid Firing", UpgradeType.FireSpeed) { }
 
+    public override string GetDescription()
+    {
+        return
+            $"Decreases time between shots from <color=#FFD700>{DataManager.playerStats.BulletSpeed}</color> seconds to <color=#FFD700>{DataManager.playerStats.BulletSpeed - DecreaseRate}</color> seconds.";
+    }
+    
     public override void Apply()
     {
-        PlayerStats.FireSpeed -= DecreaseRate;
+        DataManager.playerStats.SetFireSpeed(DecreaseRate * -1);
     }
 }
 
 /*public class Upgrade_ProjectileCount : Upgrade
 {
-    public Upgrade_ProjectileCount() : base("proj_count", "Extra Shells", "Adds 1 projectile per shot.", 30, 3) { }
+    public Upgrade_ProjectileCount() : base("Extra Shells", UpgradeType.ProjectileCount, "Adds 1 projectile per shot.") { }
+    
+    
 
     public override void Apply()
     {
@@ -73,11 +82,17 @@ public class Upgrade_ShieldPower : Upgrade
 {
     private const float ShieldIncreaseRate = 15.0f;
     
-    public Upgrade_ShieldPower() : base("shield_power", "Shield Buffer", $"Increases max shield from <color=#FFD700>{PlayerStats.ShieldPower}</color> to <color=#FFD700>{PlayerStats.ShieldPower + ShieldIncreaseRate}</color>.", 15) { }
+    public Upgrade_ShieldPower() : base( "Shield Buffer", UpgradeType.ShieldPower) { }
 
+    public override string GetDescription()
+    {
+        return
+            $"Increases max shield from <color=#FFD700>{DataManager.playerStats.ShieldPower}</color> to <color=#FFD700>{DataManager.playerStats.ShieldPower + ShieldIncreaseRate}</color>.";
+    }
+    
     public override void Apply()
     {
-        PlayerStats.ShieldPower += ShieldIncreaseRate;
+        DataManager.playerStats.SetShieldPower(ShieldIncreaseRate);
     }
 }
 
@@ -85,11 +100,17 @@ public class Upgrade_MagnetRange : Upgrade
 {
     private const float RangeIncreaseRate = 1.0f;
     
-    public Upgrade_MagnetRange() : base("magnet_range", "Core Magnetizer", $"Increases pickup range from <color=#FFD700>{PlayerStats.MagnetRange}</color> to <color=#FFD700>{PlayerStats.MagnetRange + RangeIncreaseRate}</color>.", 20) { }
+    public Upgrade_MagnetRange() : base( "Core Magnetizer", UpgradeType.MagnetRange) { }
 
+    public override string GetDescription()
+    {
+        return
+            $"Increases pickup range from <color=#FFD700>{DataManager.playerStats.MagnetRange}</color> to <color=#FFD700>{DataManager.playerStats.MagnetRange + RangeIncreaseRate}</color>.";
+    }
+    
     public override void Apply()
     {
-        PlayerStats.MagnetRange += RangeIncreaseRate;
+        DataManager.playerStats.SetMagnetRange(RangeIncreaseRate);
     }
 }
 
@@ -97,17 +118,23 @@ public class Upgrade_MoveSpeed : Upgrade
 {
     private const float MoveSpeedRate = 0.5f;
     
-    public Upgrade_MoveSpeed() : base("move_speed", "Momentum Core", $"Increases ship movement speed from <color=#FFD700>{PlayerStats.MoveSpeed}</color> to <color=#FFD700>{PlayerStats.MoveSpeed + MoveSpeedRate}</color>.", 20) { }
+    public Upgrade_MoveSpeed() : base( "Momentum Core", UpgradeType.MoveSpeed) { }
 
+    public override string GetDescription()
+    {
+        return
+            $"Increases ship movement speed from <color=#FFD700>{DataManager.playerStats.MoveSpeed}</color> to <color=#FFD700>{DataManager.playerStats.MoveSpeed + MoveSpeedRate}</color>.";
+    }
+    
     public override void Apply()
     {
-        PlayerStats.MoveSpeed += MoveSpeedRate;
+        DataManager.playerStats.SetMoveSpeed(MoveSpeedRate);
     }
 }
 
 /*public class Upgrade_DashCooldown : Upgrade
 {
-    public Upgrade_DashCooldown() : base("dash_cooldown", "Reinforced Coil", "Reduces dash cooldown.", 25) { }
+    public Upgrade_DashCooldown() : base("Reinforced Coil", UpgradeType.DashCooldown, "Reduces dash cooldown.") { }
 
     public override void Apply()
     {
@@ -119,19 +146,31 @@ public class Upgrade_CritChance : Upgrade
 {
     private const float CritChanceRate = 0.03f;
     
-    public Upgrade_CritChance() : base("crit_chance", "Critical Systems", $"Increases critical hit chance from <color=#FFD700>{PlayerStats.CritChance}%</color> to <color=#FFD700>{PlayerStats.CritChance + CritChanceRate}%</color>.", 30) { }
+    public Upgrade_CritChance() : base("Critical Systems", UpgradeType.CritChance) { }
 
+    public override string GetDescription()
+    {
+        return
+            $"Increases critical hit chance from <color=#FFD700>{DataManager.playerStats.CritChance}%</color> to <color=#FFD700>{DataManager.playerStats.CritChance + CritChanceRate}%</color>.";
+    }
+    
     public override void Apply()
     {
-        PlayerStats.CritChance += CritChanceRate;
+        DataManager.playerStats.SetCritChance(CritChanceRate);
     }
 }
 
 
 public class Upgrade_PiercingChance : Upgrade
 {
-    public Upgrade_PiercingChance() : base("pierce_drop", "Pierce Protocol", "Increases Piercing Round drop rate.", 15) { }
+    public Upgrade_PiercingChance() : base( "Pierce Protocol", UpgradeType.PiercingChance) { }
 
+    public override string GetDescription()
+    {
+        return
+            "Increases Piercing Round drop rate.";
+    }
+    
     public override void Apply()
     {
         PowerUpManager.AddDropRateBonus("PiercingRounds", 5f);
@@ -140,8 +179,14 @@ public class Upgrade_PiercingChance : Upgrade
 
 public class Upgrade_RapidFireChance : Upgrade
 {
-    public Upgrade_RapidFireChance() : base("rapid_drop", "Reflex Chip", "Increases Rapid Fire PowerUp chance.", 15) { }
+    public Upgrade_RapidFireChance() : base( "Reflex Chip", UpgradeType.RapidFireChance) { }
 
+    public override string GetDescription()
+    {
+        return
+            "Increases Rapid Fire PowerUp chance.";
+    }
+    
     public override void Apply()
     {
         PowerUpManager.AddDropRateBonus("RapidFire", 5f);

@@ -1,24 +1,52 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
-public static class PowerUpManager
+public class PowerUpManager
 {
-    private static Dictionary<string, float> dropRateBonuses = new();
+    private readonly List<PowerUp> activePowerUps = new();
+    private readonly List<Func<PowerUp>> powerUpPool;
 
-    public static void AddDropRateBonus(string powerUpId, float amount)
+    public PowerUpManager()
     {
-        if (dropRateBonuses.ContainsKey(powerUpId))
-            dropRateBonuses[powerUpId] += amount;
-        else
-            dropRateBonuses[powerUpId] = amount;
+        powerUpPool = new()
+        {
+            () => new PowerUp_AttackSpeed(),
+            () => new PowerUp_CritChance(),
+            () => new PowerUp_MoveSpeed(),
+            () => new PowerUp_Shield(),
+            () => new PowerUp_ShieldRegeneration(),
+            () => new PowerUp_ExtraProjectile(),
+        };
     }
 
-    public static float GetDropRateBonus(string powerUpId)
+    public void AddPowerUp(PowerUp powerUp)
     {
-        return dropRateBonuses.TryGetValue(powerUpId, out var value) ? value : 0f;
+        powerUp.Apply();
+        activePowerUps.Add(powerUp);
     }
 
-    public static void Reset()
+    public List<PowerUp> GetRandomPowerUps(int count)
     {
-        dropRateBonuses.Clear();
+        return powerUpPool
+            .OrderBy(_ => UnityEngine.Random.value)
+            .Take(count)
+            .Select(p => p())
+            .ToList();
     }
+
+    public void ClearAll()
+    {
+        foreach (var powerUp in activePowerUps)
+            powerUp.Remove();
+
+        activePowerUps.Clear();
+    }
+    
+    private void OnApplicationQuit()
+    {
+        ClearAll();   
+    }
+
+    public List<PowerUp> GetActivePowerUps() => new(activePowerUps);
 }

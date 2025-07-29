@@ -1,6 +1,7 @@
+using System;
 using UnityEngine;
 
-public class GameManagerTest : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     private void Awake()
     {

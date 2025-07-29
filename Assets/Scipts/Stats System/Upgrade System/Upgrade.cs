@@ -161,7 +161,7 @@ public class Upgrade_CritChance : Upgrade
 }
 
 
-public class Upgrade_PiercingChance : Upgrade
+/*public class Upgrade_PiercingChance : Upgrade
 {
     public Upgrade_PiercingChance() : base( "Pierce Protocol", UpgradeType.PiercingChance) { }
 
@@ -173,7 +173,7 @@ public class Upgrade_PiercingChance : Upgrade
     
     public override void Apply()
     {
-        PowerUpManager.AddDropRateBonus("PiercingRounds", 5f);
+        DataManager.playerStats.SetPierceCount(5);
     }
 }
 
@@ -189,7 +189,7 @@ public class Upgrade_RapidFireChance : Upgrade
     
     public override void Apply()
     {
-        PowerUpManager.AddDropRateBonus("RapidFire", 5f);
+        DataManager.playerStats.SetDropRate(5);
     }
-}
+}*/
 

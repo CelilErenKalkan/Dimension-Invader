@@ -1,7 +1,6 @@
 using System;
 
 /// <summary>
-/// Static class to hold and manage player stats during runtime.
 /// This can be reset on each run or carried over in a new game mode.
 /// </summary>
 [Serializable] // Required for JSON serialization

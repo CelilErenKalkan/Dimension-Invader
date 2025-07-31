@@ -1,17 +1,11 @@
-using UnityEngine;
-
 public enum UpgradeType
 {
     FirePower,
-    FireSpeed,
-    ProjectileCount,
     ShieldPower,
     MagnetRange,
     MoveSpeed,
-    DashCooldown,
     CritChance,
-    PiercingChance,
-    RapidFireChance
+    CritDamage
 }
 
 public abstract class Upgrade
@@ -48,36 +42,6 @@ public class Upgrade_FirePower : Upgrade
     }
 }
 
-public class Upgrade_FireSpeed : Upgrade
-{
-    private const float DecreaseRate = 0.05f;
-    
-    public Upgrade_FireSpeed() : base( "Rapid Firing", UpgradeType.FireSpeed) { }
-
-    public override string GetDescription()
-    {
-        return
-            $"Decreases time between shots from <color=#FFD700>{DataManager.playerStats.BulletSpeed}</color> seconds to <color=#FFD700>{DataManager.playerStats.BulletSpeed - DecreaseRate}</color> seconds.";
-    }
-    
-    public override void Apply()
-    {
-        DataManager.playerStats.SetFireSpeed(DecreaseRate * -1);
-    }
-}
-
-/*public class Upgrade_ProjectileCount : Upgrade
-{
-    public Upgrade_ProjectileCount() : base("Extra Shells", UpgradeType.ProjectileCount, "Adds 1 projectile per shot.") { }
-    
-    
-
-    public override void Apply()
-    {
-        PlayerStats.ProjectileCount += 1;
-    }
-}*/
-
 public class Upgrade_ShieldPower : Upgrade
 {
     private const float ShieldIncreaseRate = 15.0f;
@@ -92,7 +56,7 @@ public class Upgrade_ShieldPower : Upgrade
     
     public override void Apply()
     {
-        DataManager.playerStats.SetShieldPower(ShieldIncreaseRate);
+        DataManager.playerStats.SetMaxShieldPower(ShieldIncreaseRate);
     }
 }
 
@@ -132,16 +96,6 @@ public class Upgrade_MoveSpeed : Upgrade
     }
 }
 
-/*public class Upgrade_DashCooldown : Upgrade
-{
-    public Upgrade_DashCooldown() : base("Reinforced Coil", UpgradeType.DashCooldown, "Reduces dash cooldown.") { }
-
-    public override void Apply()
-    {
-        PlayerStats.DashCooldown -= 0.3f;
-    }
-}*/
-
 public class Upgrade_CritChance : Upgrade
 {
     private const float CritChanceRate = 0.03f;
@@ -160,36 +114,21 @@ public class Upgrade_CritChance : Upgrade
     }
 }
 
-
-/*public class Upgrade_PiercingChance : Upgrade
+public class Upgrade_CritDamage : Upgrade
 {
-    public Upgrade_PiercingChance() : base( "Pierce Protocol", UpgradeType.PiercingChance) { }
+    private const float CritDamageMultiplier = 0.1f;
+    
+    public Upgrade_CritDamage() : base("Critical Weakness", UpgradeType.CritDamage) { }
 
     public override string GetDescription()
     {
         return
-            "Increases Piercing Round drop rate.";
+            $"Increases critical hit damage by <color=#FFD700>10%</color>.";
     }
     
     public override void Apply()
     {
-        DataManager.playerStats.SetPierceCount(5);
+        DataManager.playerStats.SetCritChance(CritDamageMultiplier);
     }
 }
-
-public class Upgrade_RapidFireChance : Upgrade
-{
-    public Upgrade_RapidFireChance() : base( "Reflex Chip", UpgradeType.RapidFireChance) { }
-
-    public override string GetDescription()
-    {
-        return
-            "Increases Rapid Fire PowerUp chance.";
-    }
-    
-    public override void Apply()
-    {
-        DataManager.playerStats.SetDropRate(5);
-    }
-}*/
 

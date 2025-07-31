@@ -152,7 +152,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b660e9bf2a14f04c8758ef5ceefd766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pooledItems: []
+  pooledItems:
+  - poolName: Bullet
+    prefabs:
+    - {fileID: 7159845417623581490, guid: c237b5fbe46df734986bdefebe8bb6f5, type: 3}
+    amount: 100
+    expandable: 1
+    poolItemType: 0
+    parent: {fileID: 0}
   poolObjects: []
 --- !u!4 &427180295
 Transform:

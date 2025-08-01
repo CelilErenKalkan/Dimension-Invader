@@ -4,8 +4,6 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float shootCooldown = 1.5f;
-    [SerializeField] private Transform shootOrigin;
-    [SerializeField] private Transform shootParent;
 
     private Transform player;
 
@@ -29,9 +27,9 @@ public class Enemy : MonoBehaviour
         {
             if (player != null)
             {
-                Vector3 direction = (player.position - shootOrigin.position).normalized;
+                Vector3 direction = (player.position - transform.position).normalized;
 
-                GameObject bullet = Pool.Instance.SpawnObject(shootOrigin.position, PoolItemType.Bullet, shootParent);
+                GameObject bullet = Pool.Instance.SpawnObject(transform.position, PoolItemType.Bullet, null);
                 if (bullet.TryGetComponent(out Bullet bulletScript))
                 {
                     bulletScript.SetDirection(direction);

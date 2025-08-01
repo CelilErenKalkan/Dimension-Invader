@@ -46,7 +46,7 @@ public class PoolTest : MonoBehaviour
                 Random.Range(0, spwanHeight),
                 spawnDistance
             );
-
+            //yorum
             _pool.SpawnObject(spawnPosition, PoolItemType.Obstacles, obstacleParent);
         }
     }

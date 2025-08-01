@@ -1,5 +1,6 @@
 public enum PoolItemType
 {
-	Obstacles = 0,
-	Bullet = 1,
+	Bullet = 0,
+	Obstacles = 1,
+	AudioSource = 2,
 }

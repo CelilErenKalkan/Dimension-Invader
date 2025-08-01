@@ -155,13 +155,20 @@ MonoBehaviour:
   pooledItems:
   - poolName: Obstacles
     prefabs:
-    - {fileID: 7889140289551561389, guid: 01fd392d5a4a3b84b827c62b8e0ef740, type: 3}
     - {fileID: 5073832984189877954, guid: 0077ba96883b4844ab03f20d595530b4, type: 3}
+    - {fileID: 7889140289551561389, guid: 01fd392d5a4a3b84b827c62b8e0ef740, type: 3}
     - {fileID: 5013194607618891926, guid: 93373b8970bf6754a84bd08c5cb7d100, type: 3}
     - {fileID: 106464391018564142, guid: c603d273da5e4e848b1bb3c7ce221b5a, type: 3}
     amount: 10
     expandable: 1
     poolItemType: 0
+    parent: {fileID: 0}
+  - poolName: Bullet
+    prefabs:
+    - {fileID: 7159845417623581490, guid: c237b5fbe46df734986bdefebe8bb6f5, type: 3}
+    amount: 100
+    expandable: 0
+    poolItemType: 1
     parent: {fileID: 0}
   poolObjects: []
 --- !u!4 &427180295
@@ -500,7 +507,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1493567890}
-  - component: {fileID: 1493567889}
   m_Layer: 0
   m_Name: NextDimensionSpawner
   m_TagString: Untagged
@@ -508,23 +514,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1493567889
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1493567888}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c807c22f0ff9f84fa2b2a7df3d24e14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  obstacleParent: {fileID: 2006646958}
-  spawnInterval: 3
-  spawnDistance: 50
-  spawnWidth: 10
-  spwanHeight: 10
 --- !u!4 &1493567890
 Transform:
   m_ObjectHideFlags: 0
@@ -569,11 +558,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c807c22f0ff9f84fa2b2a7df3d24e14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacleParent: {fileID: 1169072315}
-  spawnInterval: 1.5
-  spawnDistance: 50
-  spawnWidth: 5
-  spwanHeight: 5
 --- !u!4 &1620740221
 Transform:
   m_ObjectHideFlags: 0

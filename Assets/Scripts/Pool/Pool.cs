@@ -337,7 +337,7 @@ public class Pool : MonoBehaviour
             }
         }
 
-        const string filePathAndName = "Assets/Scripts/Pool/PoolItemType.cs";
+        const string filePathAndName = "Assets/PoolItemType.cs";
  
         using ( var streamWriter = new StreamWriter( filePathAndName ) )
         {

@@ -3,14 +3,42 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private float shootCooldown = 1.5f;
+        [SerializeField] private float moveSpeed = 3f;
+        [SerializeField] private float shootCooldown = 1.5f;
+        [SerializeField] private float fireRange = 15f;
 
     private Transform player;
+     private Coroutine shootCoroutine;
 
     private void OnEnable()
     {
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
         StartCoroutine(ShootRoutine());
+
+        if (shootCoroutine == null)
+        {
+            shootCoroutine = StartCoroutine(ShootRoutine());
+        }
+    }
+
+     private void OnDisable()
+    {
+        
+        if (shootCoroutine != null)
+        {
+            StopCoroutine(shootCoroutine);
+            shootCoroutine = null;
+        }
+    }
+
+     private void Update()
+    {
+        
+        if (player != null)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
+            transform.LookAt(player);
+        }
     }
 
     public void TakeDamage(float amount)
@@ -25,12 +53,12 @@ public class Enemy : MonoBehaviour
 
         while (true)
         {
-            if (player != null)
+            if (player != null && Vector3.Distance(transform.position, player.position) <= fireRange)
             {
                 Vector3 direction = (player.position - transform.position).normalized;
 
                 GameObject bullet = Pool.Instance.SpawnObject(transform.position, PoolItemType.Bullet, null);
-                if (bullet.TryGetComponent(out Bullet bulletScript))
+                if (bullet != null && bullet.TryGetComponent(out Bullet bulletScript))
                 {
                     bulletScript.SetDirection(direction);
                     bulletScript.SetDamage(GameMechanics.GiveDamage()); // Enemy uses same damage logic for now

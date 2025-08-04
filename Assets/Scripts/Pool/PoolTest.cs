@@ -5,6 +5,12 @@ using UnityEngine;
 public class PoolTest : MonoBehaviour
 {
     private Pool _pool;
+    private bool shouldStopSpawning = false;
+
+    public void StopSpawning()
+    {
+        shouldStopSpawning = true;
+    }
 
     [Header("Spawner Ayarları")]
     [SerializeField] private Transform obstacleParent;
@@ -17,7 +23,7 @@ public class PoolTest : MonoBehaviour
     {
         PoolItemType.Obstacles
     };
-
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +37,7 @@ public class PoolTest : MonoBehaviour
      private IEnumerator SpawnObstaclesRoutine()
     {
 
-        while (true)
+        while (!shouldStopSpawning)
         {
 
             yield return new WaitForSeconds(spawnInterval);

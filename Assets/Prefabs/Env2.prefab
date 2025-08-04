@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3161553105704041947}
   - component: {fileID: 3747555041831179939}
+  - component: {fileID: 5535644615821896886}
   m_Layer: 0
   m_Name: Env2
   m_TagString: Untagged
@@ -46,6 +47,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
+--- !u!114 &5535644615821896886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3410066877975971545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32a78f4009f52943b5f7770cebe5fc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3455110562634634455
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -65,6 +78,10 @@ PrefabInstance:
     - target: {fileID: 645532023751974076, guid: 057fde78fc4fe2d4f8fc9c04b36c0b75, type: 3}
       propertyPath: m_Center.z
       value: 0.07549634
+      objectReference: {fileID: 0}
+    - target: {fileID: 645532023751974076, guid: 057fde78fc4fe2d4f8fc9c04b36c0b75, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3801924544380050682, guid: 057fde78fc4fe2d4f8fc9c04b36c0b75, type: 3}
       propertyPath: m_Name

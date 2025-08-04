@@ -12,7 +12,7 @@ public class SpaceshipRealisticFlight : MonoBehaviour
     public float maxVelocity = 20f;
 
     [Header("Roll Sýnýrlamasý")]
-    public float maxRollAngle = 85f;  // Saða-sola maksimum dönüþ açýsý (+/- 45 derece önerilir)
+    public float maxRollAngle = 85f;
 
     Rigidbody rb;
     float rollInput;
@@ -33,27 +33,26 @@ public class SpaceshipRealisticFlight : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Mevcut roll açýsýný bul
+        // roll açýsýný bul
         float currentRoll = NormalizeAngle(transform.localEulerAngles.z);
 
-        // Yeni Roll hedefini hesapla
+        //Roll hedefini hesapla
         float desiredRollChange = -rollInput * rollSpeed * Time.fixedDeltaTime;
         float desiredRoll = Mathf.Clamp(currentRoll + desiredRollChange, -maxRollAngle, maxRollAngle);
         float rollCorrection = desiredRoll - currentRoll;
 
-        // Roll açýsý limiti eklenmiþ tork
+        // tork
         Vector3 torque =
             transform.forward * rollCorrection +
             transform.right * pitchInput * pitchSpeed * Time.fixedDeltaTime;
 
         rb.AddTorque(torque, ForceMode.VelocityChange);
 
-        // Ýleri doðru sabit hýz
         rb.AddForce(transform.forward * forwardSpeed, ForceMode.Acceleration);
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxVelocity);
     }
 
-    // Açý normalizasyonu için yardýmcý fonksiyon (-180 ile +180 arasý)
+    
     float NormalizeAngle(float angle)
     {
         angle = angle % 360;
